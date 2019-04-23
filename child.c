@@ -63,10 +63,10 @@ int main(int argc, char * argv[]){
 		msgsnd(msgid, &message, sizeof(message), 0);
 		msgrcv(msgid1, &message, sizeof(message), logicalNum, 0);
 		printf("Child %li granted %d resources.\n", logicalNum, message.granted);
-		resourcesHeld = message.granted;
+		resourcesHeld = resourcesHeld + message.granted;
 		terminates = rand() % 100;
 		time(&when2);
-		if ((when2 - when) > 3){
+		if ((when2 - when) > 1){
 			terminates = 1;
 		}
 	}

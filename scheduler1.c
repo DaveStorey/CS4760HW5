@@ -31,7 +31,7 @@ struct mesg_buffer{
 
 void scheduler(char* outfile, int total){
 	unsigned int quantum = 500000;
-	int alive, totalSpawn, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, resource = 7, totalFlag = 0, pid[10], status;
+	int alive = 0, totalSpawn = 0, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, resource = 7, totalFlag = 0, pid[10], status;
 	unsigned long increment, timeBetween;
 	char * parameter[32], parameter1[32], parameter2[32], parameter3[32], parameter4[32], parameter5[32], parameter6[32];
 	//Pointer for the shared memory timer
@@ -91,7 +91,6 @@ void scheduler(char* outfile, int total){
 			shmPTR[0].nano -= 1000000000;
 		}
 		printf("Timer: %d:%li\n", shmPTR[0].sec, shmPTR[0].nano);
-		usleep(200000);
 		//If statement to spawn child if timer has passed its birth time.
 		if((shmPTR[0].sec > launchTime.sec) || ((shmPTR[0].sec == launchTime.sec) && (shmPTR[0].nano > launchTime.nano))){
 			if((pid[i] = fork()) == 0){
@@ -107,6 +106,7 @@ void scheduler(char* outfile, int total){
 				printf("Launching child %d at %d.%li seconds\n", getpid(), shmPTR[0].sec, shmPTR[0].nano);
 				execvp("./child\0", args);
 			}
+			usleep(200000);
 			launchTime.sec = shmPTR[0].sec;
 			launchTime.nano = shmPTR[0].nano;
 			launchTime.nano += timeBetween;
@@ -120,6 +120,8 @@ void scheduler(char* outfile, int total){
 			if (msgrcv(msgid2, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
 				resource = resource - message.request;
 				printf("Parent receiving %d resource from dying child %li.\n", message.request, message.processNum);
+				alive--;
+				pid[message.processNum-1] = -1;
 			}
 			if (msgrcv(msgid, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
 				if(resource - message.request > 0){
@@ -133,6 +135,7 @@ void scheduler(char* outfile, int total){
 			}
 		}
 	}
+	printf("Here, %d alive\n", alive);
 	while(alive > 0 && keepRunning == 1){
 		if (msgrcv(msgid2, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
 			resource = resource - message.request;
@@ -147,9 +150,15 @@ void scheduler(char* outfile, int total){
 				message.request = 0;
 				msgsnd(msgid1, &message, sizeof(message), 0);
 			}
-			waitpid(0, &status, WNOHANG);
-			if (WIFEXITED(status)){
-				alive--;
+			for(int k = 0; k < totalSpawn; k++){
+				if (pid[k] != -1){
+					printf("Child %d still alive.\n", k);
+					waitpid(pid[k], &status, WNOHANG);
+					if (WIFEXITED(status)){
+						printf("Child died.\n");
+						alive--;
+					}
+				}
 			}
 		}
 	}	
@@ -165,11 +174,12 @@ void scheduler(char* outfile, int total){
 		printf("Terminated due to ctrl-c signal.\n");
 		//fprintf(outPut, "Scheduler terminated at %li nanoseconds due to ctrl-c signal.\n",  shmPTR[0].timeClock);
 	}
-	sleep(1);
 	shmdt(shmPTR);
 	shmctl(shmID, IPC_RMID, NULL);
 	msgctl(msgid, IPC_RMID, NULL);
 	msgctl(msgid1, IPC_RMID, NULL);
+	msgctl(msgid2, IPC_RMID, NULL);
 	wait(NULL);
 	fclose(outPut);
+	sleep(1);
 }
