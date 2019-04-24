@@ -10,8 +10,12 @@
 #include <signal.h>
 #include <sys/msg.h>
 
+#define resSize 3
+#define available 4
+
 //Signal handler to catch ctrl-c
 static volatile int keepRunning = 1;
+static void deadlockDetector(int, int[resSize], int[][resSize], int[][resSize]);
 
 void intHandler(int dummy) {
     keepRunning = 0;
@@ -25,13 +29,14 @@ struct clock{
 struct mesg_buffer{
 	long mesg_type;
 	unsigned long processNum;
-	int request;
-	int granted;
+	int request[resSize];
+	int granted[resSize];
 }message;
 
 void scheduler(char* outfile, int total){
 	unsigned int quantum = 500000;
-	int alive = 0, totalSpawn = 0, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, resource = 20, totalFlag = 0, pid[10], status, requests[10];
+	int alive = 0, totalSpawn = 0, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, totalFlag = 0, pid[total], status, request[total][resSize], grantFlag = 0, cycles = 0;
+	int resource[resSize], resOut[total][resSize];
 	unsigned long increment, timeBetween;
 	char * parameter[32], parameter1[32], parameter2[32], parameter3[32], parameter4[32], parameter5[32], parameter6[32];
 	//Pointer for the shared memory timer
@@ -62,7 +67,18 @@ void scheduler(char* outfile, int total){
 		printf("Output file could not be created.\n");
 		exit(EXIT_SUCCESS);
 	}
-	
+	//initializing resource arrays
+	for(int k = 0; k < resSize; k++){
+		resource[k] = available;
+		message.request[k] = 0;
+		message.granted[k] = 0;
+	}
+	for(int k = 0; k < total; k++){
+		for(int j = 0; j < total; j++){
+			resOut[k][j] = 0;
+			request[k][j] = 0;
+		}
+	}
 	//Get and access shared memory, setting initial timer state to 0.
 	shmID = shmget(key, sizeof(struct clock), IPC_CREAT | IPC_EXCL | 0777);
 	shmPTR = (struct clock *) shmat(shmID, (void *) 0, 0);
@@ -77,13 +93,13 @@ void scheduler(char* outfile, int total){
 	//Call to signal handler for ctrl-c
 	signal(SIGINT, intHandler);
 	increment = (rand() % 5000000) + 25000000;
-	//While loop keeps running until all children are dead, ctrl-c, or time is reached.
-	while((i < 10) && (keepRunning == 1) && (timeFlag == 0)){
-		//Incrementing the timer.
+	//While loop keeps running until all children are spawned, ctrl-c, or time is reached.
+	while((i < total) && (keepRunning == 1) && (timeFlag == 0)){
 		time(&when2);
-		/*if (when2 - when > 3){
+		if (when2 - when > 3){
 			timeFlag = 1;
-		}*/
+		}
+		//Incrementing the timer.
 		shmPTR[0].nano += increment;
 		if(shmPTR[0].nano >= 1000000000){
 			shmPTR[0].sec += 1;
@@ -114,66 +130,100 @@ void scheduler(char* outfile, int total){
 			alive++;
 			totalSpawn++;
 			i++;
+			cycles++;
 		}
 		if (msgrcv(msgid2, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
-			resource = resource - message.request;
-			printf("Parent receiving %d resource from dying child,%li. %d remain.\n", message.request, message.processNum, resource);
+			printf("Parent received dead child message.\n");
+			for(int k = 0; k < resSize; k++){
+				resource[k] = resource[k] - message.request[k];
+				//printf("Parent receiving %d resource from dying child %li. %d remain.\n", message.request[k], message.processNum, resource[k]);
+				request[message.processNum-1][k] = 0;
+			}
 			alive--;
 			pid[message.processNum-1] = -1;
-			requests[message.processNum-1] = 0;
-			for (int k = 0; k < totalSpawn; k++){
-				if ((requests[k] > 0) && (requests[k] < resource)){
-					message.mesg_type = k+1;
-					message.granted = requests[k];
-					resource = resource - requests[k];
-					message.request = 0;
-					printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
+			for (long k = 0; k < totalSpawn; k++){
+				for (int j = 0; j < resSize; j++){
+					if ((request[k][j] > 0) && (request[k][j] < resource[j])){
+						grantFlag = 1;
+						message.mesg_type = k+1;
+						message.granted[j] = request[k][j];
+						resource[j] = resource[j] - request[k][j];
+						resOut[k][j] = message.granted[j];
+					}
+				}
+				if(grantFlag){
+					grantFlag = 0;
+					printf("Parent granting child %li resources from dead child.\n", message.mesg_type);
 					msgsnd(msgid1, &message, sizeof(message), 0);
 				}
 			}
 		}
 		if (msgrcv(msgid, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
-			if(resource - message.request > 0){
-				resource = resource - message.request;
-				message.granted = message.request;
-				message.mesg_type = message.processNum;
-				printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
-				message.request = 0;
-				msgsnd(msgid1, &message, sizeof(message), 0);
+			for(int k = 0; k < resSize; k++){
+				if(resource[k] - message.request[k] > 0){
+					grantFlag = 1;
+					resource[k] = resource[k] - message.request[k];
+					message.granted[k] = message.request[k];
+					message.mesg_type = message.processNum;
+					request[message.processNum-1][k] = message.granted[k];
+				}
+				else{
+					request[message.processNum-1][k] = message.request[k];
+				}
 			}
-			else{
-				requests[message.processNum-1] = message.request;
+			if(grantFlag == 1){
+				printf("Parent granting child %li resources.\n", message.mesg_type);
+				msgsnd(msgid1, &message, sizeof(message), 0);
+				grantFlag = 0;
 			}
 		}
 	}
 	while(alive > 0 && keepRunning == 1){
+		if (cycles % 100 == 0){
+			deadlockDetector(total, resource, request, resOut);
+		}
 		if (msgrcv(msgid2, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
-			resource = resource - message.request;
-			printf("Parent receiving %d resource from dying child %li.\n", message.request, message.processNum);
-			requests[message.processNum-1] = 0;
+			printf("Parent received dead child message.\n");
 			alive--;
-			for (int k = 0; k < totalSpawn; k++){
-				if ((requests[k] > 0) && (requests[k] < resource)){
-					message.mesg_type = k+1;
-					message.granted = requests[k];
-					resource = resource - requests[k];
-					message.request = 0;
-					printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
-					msgsnd(msgid1, &message, sizeof(message), 0);
+			for(int k = 0; k < resSize; k++){
+				resource[k] = resource[k] - message.request[k];
+				request[message.processNum-1][k] = 0;
+				for (int k = 0; k < totalSpawn; k++){
+					for (int j = 0; j < resSize; j++){
+						if ((request[k][j] > 0) && (request[k][j] < resource[j])){
+							message.mesg_type = k+1;
+							grantFlag = 1;
+							message.granted[j] = request[k][j];
+							resource[j] = resource[j] - request[k][j];
+							resOut[k][j] = message.granted[j];
+						}
+					}
 				}
+				if(grantFlag == 1){
+					printf("Parent granting child %li resources from dead child.\n", message.mesg_type);
+					msgsnd(msgid1, &message, sizeof(message), 0);
+					grantFlag = 0;
+				}			
 			}
 		}
 		else if (msgrcv(msgid, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
-			if(resource - message.request > 0){
-				resource = resource - message.request;
-				message.granted = message.request;
-				message.mesg_type = message.processNum;
-				printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
-				message.request = 0;
+			for(int k = 0; k < resSize; k++){
+				if(resource[k] - message.request[k] > 0){
+					grantFlag = 1;
+					resource[k] = resource[k] - message.request[k];
+					message.granted[k] = message.request[k];
+					message.mesg_type = message.processNum;
+					resOut[message.processNum][k] = message.granted[k];
+				}
+			}
+			if (grantFlag == 1){
+				printf("Parent granting child %li resources.\n", message.mesg_type);
 				msgsnd(msgid1, &message, sizeof(message), 0);
+				grantFlag = 0;
 			}
 		}
-	}	
+		cycles++;
+	}
 	if(timeFlag == 1){
 		printf("Program has reached its allotted time, exiting.\n");
 		//fprintf(outPut, "Scheduler terminated at %li nanoseconds due to time limit.\n",  shmPTR[0].timeClock);
@@ -193,5 +243,26 @@ void scheduler(char* outfile, int total){
 	msgctl(msgid2, IPC_RMID, NULL);
 	wait(NULL);
 	fclose(outPut);
-	sleep(1);
 }
+
+void deadlockDetector(int total, int resources[resSize], int requests[total][resSize], int resOut[total][resSize]){
+	int procReq[resSize];
+	int deadlocked[total], fulfillable = 1;
+	for (int i = 0; i < total; i++){
+		for (int j = 0; j < resSize; j++){
+			if (requests[i][j] > resources[j]){
+				
+			}
+			else{
+				deadlocked[i] = 0;
+			}
+		}
+	}
+	for (int i = 0; i < total; i++){
+		for (int j = 0; j < resSize; j++){
+			
+		}
+	}
+	usleep(500000);
+}
+
