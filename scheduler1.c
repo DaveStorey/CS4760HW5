@@ -31,7 +31,7 @@ struct mesg_buffer{
 
 void scheduler(char* outfile, int total){
 	unsigned int quantum = 500000;
-	int alive = 0, totalSpawn = 0, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, resource = 7, totalFlag = 0, pid[10], status;
+	int alive = 0, totalSpawn = 0, msgid, msgid1, msgid2, shmID, timeFlag = 0, i = 0, resource = 20, totalFlag = 0, pid[10], status, requests[10];
 	unsigned long increment, timeBetween;
 	char * parameter[32], parameter1[32], parameter2[32], parameter3[32], parameter4[32], parameter5[32], parameter6[32];
 	//Pointer for the shared memory timer
@@ -78,7 +78,6 @@ void scheduler(char* outfile, int total){
 	signal(SIGINT, intHandler);
 	increment = (rand() % 5000000) + 25000000;
 	//While loop keeps running until all children are dead, ctrl-c, or time is reached.
-	printf("Increment: %li, time between children: %li\n", increment, timeBetween);
 	while((i < 10) && (keepRunning == 1) && (timeFlag == 0)){
 		//Incrementing the timer.
 		time(&when2);
@@ -90,7 +89,6 @@ void scheduler(char* outfile, int total){
 			shmPTR[0].sec += 1;
 			shmPTR[0].nano -= 1000000000;
 		}
-		printf("Timer: %d:%li\n", shmPTR[0].sec, shmPTR[0].nano);
 		//If statement to spawn child if timer has passed its birth time.
 		if((shmPTR[0].sec > launchTime.sec) || ((shmPTR[0].sec == launchTime.sec) && (shmPTR[0].nano > launchTime.nano))){
 			if((pid[i] = fork()) == 0){
@@ -103,7 +101,6 @@ void scheduler(char* outfile, int total){
 				sprintf(parameter6, "%d", i+1);
 				srand(getpid() * (time(0) / 3));
 				char * args[] = {parameter1, parameter2, parameter3, parameter4, parameter5, parameter6, NULL};
-				printf("Launching child %d at %d.%li seconds\n", getpid(), shmPTR[0].sec, shmPTR[0].nano);
 				execvp("./child\0", args);
 			}
 			usleep(200000);
@@ -117,31 +114,25 @@ void scheduler(char* outfile, int total){
 			alive++;
 			totalSpawn++;
 			i++;
-			if (msgrcv(msgid2, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
-				resource = resource - message.request;
-				printf("Parent receiving %d resource from dying child %li.\n", message.request, message.processNum);
-				alive--;
-				pid[message.processNum-1] = -1;
-			}
-			if (msgrcv(msgid, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
-				if(resource - message.request > 0){
-					resource = resource - message.request;
-					message.granted = message.request;
-					message.mesg_type = message.processNum;
-					printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
+		}
+		if (msgrcv(msgid2, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
+			resource = resource - message.request;
+			printf("Parent receiving %d resource from dying child,%li. %d remain.\n", message.request, message.processNum, resource);
+			alive--;
+			pid[message.processNum-1] = -1;
+			requests[message.processNum-1] = 0;
+			for (int k = 0; k < totalSpawn; k++){
+				if ((requests[k] > 0) && (requests[k] < resource)){
+					message.mesg_type = k+1;
+					message.granted = requests[k];
+					resource = resource - requests[k];
 					message.request = 0;
+					printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
 					msgsnd(msgid1, &message, sizeof(message), 0);
 				}
 			}
 		}
-	}
-	printf("Here, %d alive\n", alive);
-	while(alive > 0 && keepRunning == 1){
-		if (msgrcv(msgid2, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
-			resource = resource - message.request;
-			printf("Parent receiving %d resource from dying child %li.\n", message.request, message.processNum);
-		}
-		if (msgrcv(msgid, &message, sizeof(message), 1, IPC_NOWAIT) !=-1){
+		if (msgrcv(msgid, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
 			if(resource - message.request > 0){
 				resource = resource - message.request;
 				message.granted = message.request;
@@ -150,15 +141,36 @@ void scheduler(char* outfile, int total){
 				message.request = 0;
 				msgsnd(msgid1, &message, sizeof(message), 0);
 			}
-			for(int k = 0; k < totalSpawn; k++){
-				if (pid[k] != -1){
-					printf("Child %d still alive.\n", k);
-					waitpid(pid[k], &status, WNOHANG);
-					if (WIFEXITED(status)){
-						printf("Child died.\n");
-						alive--;
-					}
+			else{
+				requests[message.processNum-1] = message.request;
+			}
+		}
+	}
+	while(alive > 0 && keepRunning == 1){
+		if (msgrcv(msgid2, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
+			resource = resource - message.request;
+			printf("Parent receiving %d resource from dying child %li.\n", message.request, message.processNum);
+			requests[message.processNum-1] = 0;
+			alive--;
+			for (int k = 0; k < totalSpawn; k++){
+				if ((requests[k] > 0) && (requests[k] < resource)){
+					message.mesg_type = k+1;
+					message.granted = requests[k];
+					resource = resource - requests[k];
+					message.request = 0;
+					printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
+					msgsnd(msgid1, &message, sizeof(message), 0);
 				}
+			}
+		}
+		else if (msgrcv(msgid, &message, sizeof(message), 0, IPC_NOWAIT) !=-1){
+			if(resource - message.request > 0){
+				resource = resource - message.request;
+				message.granted = message.request;
+				message.mesg_type = message.processNum;
+				printf("Parent granting child %li %d resources, %d remain.\n", message.processNum, message.request, resource);
+				message.request = 0;
+				msgsnd(msgid1, &message, sizeof(message), 0);
 			}
 		}
 	}	
