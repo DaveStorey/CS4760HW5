@@ -1,6 +1,6 @@
 //David Storey
 //CS4760
-//Project 3
+//Project 5
 
 #include<stdio.h>
 #include<fcntl.h>
@@ -15,10 +15,10 @@
 
 
 int main(int argc, char * argv[]){      
-	int opt, x = 0, total = 20, hFlag = 0;
+	int opt, x = 0, total = 18, hFlag = 0, verbFlag = 0;
 	char * outfile = "output.txt";
 	//Assigning default case name.
-	if((opt = getopt(argc, argv, "-hosn")) != -1){
+	if((opt = getopt(argc, argv, "-hovn")) != -1){
 		do{
 			x++;
 			switch(opt){
@@ -31,16 +31,19 @@ int main(int argc, char * argv[]){
 				break;
 			case 'n':
 				total = atoi(argv[x+1]);
-				if (total > 20)
-					total = 20;
+				if (total > 18)
+					total = 18;
+				break;
+			case 'v':
+				verbFlag = 1;
 				break;
 			//Case handles last run through of getopt.
 			case 1:
 				break;
 			}
-		} while((opt = getopt(argc, argv, "-hon")) != -1);
+		} while((opt = getopt(argc, argv, "-hovn")) != -1);
 	}
 	if (hFlag == 0)
-		scheduler(outfile, total);
+		scheduler(outfile, total, verbFlag);
 	return 0; 
 }
