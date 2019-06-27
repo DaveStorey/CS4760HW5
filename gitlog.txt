@@ -1,0 +1,29 @@
+commit c9667386025db95fb036f2122c92e299e62e0458
+Author: David Storey <dstorey65@gmail.com>
+Date:   Thu Apr 25 21:17:18 2019 -0500
+
+    Everything working
+
+commit 442b2aa608c5b1ef632fab5cdbee3baa4abba3f8
+Author: David Storey <dstorey65@gmail.com>
+Date:   Wed Apr 24 18:20:40 2019 -0500
+
+    Resource arrays working, deadlocks forced; need to implement deadlock detection/resolution.
+
+commit e3284013fcf151d87f43eb99d5c4ac9f91b89df6
+Author: David Storey <dstorey65@gmail.com>
+Date:   Tue Apr 23 20:43:31 2019 -0500
+
+    Working for one resource.
+
+commit 5339b55bb5cbaac557e937d0f838a47e1c382113
+Author: David Storey <dstorey65@gmail.com>
+Date:   Tue Apr 23 16:52:28 2019 -0500
+
+    Kinks with waitpid
+
+commit 747b8cee135d1c74dc2da2a2714110873b150fbb
+Author: David Storey <dstorey65@gmail.com>
+Date:   Tue Apr 23 16:32:33 2019 -0500
+
+    After weekend, message queues and shared memory working.

@@ -1,0 +1,474 @@
+In child 4.
+Child 4 requesting resources.
+Child 4 receiving resources.
+Child 4 dying.
+In child 1.
+Child 1 requesting resources.
+Child 1 receiving resources.
+Child 1 requesting resources.
+Child 1 receiving resources.
+Child 1 requesting resources.
+Child 1 receiving resources.
+Child 1 requesting resources.
+Child 1 receiving resources.
+Child 1 dying.
+In child 6.
+Child 6 dying.
+In child 3.
+Child 3 requesting resources.
+Child 3 receiving resources.
+Child 3 requesting resources.
+Child 3 receiving resources.
+Child 3 releasing resources.
+Child 3 receiving resources.
+Child 3 releasing resources.
+Child 3 receiving resources.
+Child 3 requesting resources.
+Child 3 receiving resources.
+Child 3 requesting resources.
+Child 3 receiving resources.
+Child 3 requesting resources.
+Child 3 receiving resources.
+Child 3 dying.
+In child 5.
+Child 5 requesting resources.
+Child 5 receiving resources.
+Child 5 requesting resources.
+Child 5 receiving resources.
+Child 5 requesting resources.
+Child 5 receiving resources.
+Child 5 requesting resources.
+Child 5 receiving resources.
+Child 5 dying.
+In child 8.
+Child 8 requesting resources.
+Child 8 receiving resources.
+Child 8 releasing resources.
+Child 8 receiving resources.
+Child 8 requesting resources.
+Child 8 receiving resources.
+Child 8 dying.
+In child 9.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 releasing resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 requesting resources.
+Child 9 receiving resources.
+Child 9 dying.
+Parent granting child 1 resources.
+Parent granting child 1 resources.
+Parent granting child 2 resources.
+Parent granting child 1 resources.
+Parent granting child 2 resources.
+Parent granting child 3 resources.
+Parent granting child 2 resources.
+Parent granting child 1 resources.
+Parent granting child 4 resources.
+Parent received dead child message from 4, 4519.
+Parent granting child 1 resources from dead child.
+Parent granting child 2 resources from dead child.
+Parent granting child 3 resources from dead child.
+Parent granting child 2 resources.
+Parent received dead child message from 1, 4516.
+Parent granting child 3 resources from dead child.
+Parent granting child 3 resources.
+Parent received dead child message from 6, 4521.
+Parent granting child 3 resources from dead child.
+Parent granting child 5 resources.
+Parent granting child 2 resources.
+Parent granting child 3 resources.
+Parent granting child 2 resources.
+Parent granting child 3 resources.
+Parent granting child 3 resources.
+Parent received dead child message from 3, 4518.
+Parent granting child 2 resources from dead child.
+Parent granting child 5 resources from dead child.
+Parent granting child 7 resources.
+Parent granting child 2 resources.
+Parent granting child 3 resources.
+Parent granting child 5 resources.
+Parent granting child 8 resources.
+Parent granting child 2 resources.
+Parent granting child 3 resources.
+Parent granting child 9 resources.
+Parent granting child 10 resources.
+Parent granting child 2 resources.
+Parent granting child 2 resources.
+Parent granting child 5 resources.
+Parent received dead child message from 5, 4520.
+Parent granting child 3 resources from dead child.
+Parent granting child 8 resources from dead child.
+Parent granting child 9 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 7 resources.
+Parent granting child 11 resources.
+Parent granting child 5 resources.
+Parent granting child 12 resources.
+Parent granting child 2 resources.
+Parent granting child 8 resources.
+Parent granting child 13 resources.
+Parent granting child 9 resources.
+Parent granting child 14 resources.
+Parent received dead child message from 8, 4523.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 9 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 9 resources from dead child.
+Parent granting child 9 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 9 resources from dead child.
+Parent granting child 10 resources.
+Parent granting child 2 resources.
+Parent granting child 15 resources.
+Parent granting child 2 resources.
+Parent granting child 16 resources.
+Parent granting child 9 resources.
+Parent granting child 10 resources.
+Parent granting child 8 resources.
+Parent granting child 11 resources.
+Parent granting child 7 resources.
+Parent granting child 17 resources.
+Parent granting child 12 resources.
+Parent granting child 18 resources.
+Parent granting child 2 resources.
+Parent granting child 9 resources.
+Parent granting child 13 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 9 resources.
+Parent granting child 9 resources.
+Parent granting child 12 resources.
+Parent granting child 9 resources.
+Parent granting child 12 resources.
+Parent granting child 9 resources.
+Parent received dead child message from 9, 4524.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 11 resources from dead child.
+Parent granting child 11 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 11 resources from dead child.
+Parent granting child 10 resources from dIn child 11.
+Child 11 requesting resources.
+Child 11 receiving resources.
+Child 11 requesting resources.
+Child 11 receiving resources.
+Child 11 requesting resources.
+Child 11 receiving resources.
+Child 11 requesting resources.
+Child 11 receiving resources.
+Child 11 dying.
+In child 7.
+Child 7 releasing resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 releasing resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 releasing resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 requesting resources.
+Child 7 receiving resources.
+Child 7 dying.
+ead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent received dead child message from 11, 4526.
+Parent granting child 12 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources.
+Parent granting child 2 resources.
+Parent granting child 10 resources.
+Parent granting child 10 resources.
+Parent granting child 14 resources.
+Parent granting child 10 resources.
+Parent granting child 15 resources.
+Parent granting child 2 resources.
+Parent granting child 16 resources.
+Parent granting child 9 resources.
+Parent granting child 10 resources.
+Parent granting child 11 resources.
+Parent granting child 7 resources.
+Parent granting child 17 resources.
+Parent granting child 12 resources.
+Parent granting child 18 resources.
+Parent granting child 2 resources.
+Parent granting child 9 resources.
+Parent granting child 13 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 12 resources.
+Parent granting child 12 resources.
+Parent granting child 10 resources.
+Parent received dead child message from 7, 4522.
+Parent granting child 12 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 7 resources from dead child.
+Parent granting child 3 resources from dead child.
+Parent granting child 3 resources from dead child.
+Parent granting child 3 resources from dead child.
+Parent granting child 5 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 10 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 12 resources from dead child.
+Parent granting child 10 resources.
+Parent granting child 11 resources.
+Parent granting child 12 resources.
+Parent granting child 10 resources.
+Parent granting child 12 resources.
+Parent granting child 12 resources.
+Parent granting child 12 resources.
+Parent granting child 10 resources.
+Parent granting child 10 resources.
+Parent granting child 12 resources.
+Parent granting child 12 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 2 resources.
+Parent granting child 14 resources.
+Parent granting child 2 resources.
+Parent granting child 16 resources.
+Parent granting child 7 resources.
+Parent granting child 2 resources.
+Parent granting child 18 resources.
+Parent granting child 7 resources.
+Parent granting child 7 resources.
+Parent granting child 2 resources.
+Parent granting child 2 resources.
+Parent grantiIn child 15.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 releasing resources.
+Child 15 receiving resources.
+Child 15 releasing resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 releasing resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 releasing resources.
+Child 15 receiving resources.
+Child 15 requesting resources.
+Child 15 receiving resources.
+Child 15 dying.
+In child 13.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 releasing resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 requesting resources.
+Child 13 receiving resources.
+Child 13 dying.
+In child 14.
+Child 14 releasing resources.
+Child 14 receiving resources.
+Child 14 requesting resources.
+Child 14 receiving resources.
+Child 14 requesting resources.
+Child 14 receiving resources.
+Child 14 requesting resources.
+Child 14 receiving resources.
+Child 14 dying.
+In child 18.
+Child 18 requesting resources.
+Child 18 receiving resources.
+Child 18 requesting resources.
+Child 18 receiving resources.
+Child 18 requesting resources.
+Child 18 receiving resources.
+Child 18 dying.
+In child 16.
+Child 16 releasing resources.
+Child 16 receiving resources.
+Child 16 requesting resources.
+Child 16 receiving resources.
+Child 16 releasing resources.
+Child 16 receiving resources.
+Child 16 requesting resources.
+Process 4531 caught sigint.
+Child 16 receiving resources.
+Child 16 dying.
+In child 17.
+Child 17 requesting resources.
+Child 17 receiving resources.
+Child 17 requesting resources.
+Child 17 receiving resources.
+Child 17 requesting resources.
+Process 4532 caught sigint.
+Child 17 receiving resources.
+Child 17 dying.
